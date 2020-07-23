@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: random
+  name: random-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: random
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: random
+    spec:
+      containers:
+      - command:
+        - /random_image
+        image: rcanderson23/random-image:v1
+        name: random-container
+      initContainers:
+      - command:
+        - /s3downloader
+        - -bucket=<bucket name>
+        - -image-dir=<path to images directory in the container>
+        - -key=<path to images in s3 bucket>
+        - -region=<region>
+        image: rcanderson23/s3downloader:v1
+        name: s3-downloader
