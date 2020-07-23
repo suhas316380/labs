@@ -1,4 +1,4 @@
-Lab 4 EKS IRSA
+Lab 4 EKS IRSA (IAM Roles for Service Account)
 ===
 
 Learning Objectives
