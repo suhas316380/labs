@@ -1,14 +1,18 @@
-Lab 6 Isolated Cluster
-===
+Lab 5 EKS Windows Troubleshooting
+---
 
 Learning Objectives
----
-* VPC Requirements for EKS cluster
+===
+* Intermediate/Advanced Kubernetes troubleshooting
+* Node access through aws-auth ConfigMap
+* EKS Windows requirements and functionality
 
 Tasks
----
-1. Create two additional subnets in different AZs in the VPC created by eksctl from `lab1`. The route table on these subnets should not have a NAT GW/IGW or any kind of internet access.
-2. Create an EKS cluster using these two new subnets: `eksctl create cluster --without-nodegroup --version=1.16 --name AirgappedCluster --vpc-private-subnets=subnet-123,subnet-456`
-3. Once the cluster is created, change the endpoint access from public to "private and public"
-4. Launch worker nodes in these subnets with the example linux CloudFormation template so that they will join the EKS cluster. (Hint: Having a bastion host so you can SSH into these isolated nodes may prove helpful in troubleshooting)
+===
+1. Scale any existing nodegroups to 0 so that you have 0 worker nodes in your cluster.
+2. Deploy linux worker nodes to your cluster using the provided CloudFormation template `amazon-eks-nodegroup.yaml`. Do not use template provided in the AWS Documentation. Be sure to modify your aws-auth ConfigMap and ensure your worker node joins successfully. 
+3. Windows pods have a pre-req before they can be successfully deployed. Follow the directions [here](https://docs.aws.amazon.com/eks/latest/userguide/windows-support.html#enable-windows-support) to install them.
+4. Deploy your Windows nodes using the provided CloudFormation template `amazon-eks-windows-nodegroup.yaml`. Do not use template provided in the AWS Documentation. Be sure to modify your aws-auth ConfigMap and ensure your worker node joins successfully. 
+5. Deploy `windows.yaml` and observe windows pod state. 
+6. Troubleshoot and resolve Windows pod issue.
 
